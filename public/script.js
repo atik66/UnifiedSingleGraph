@@ -2300,7 +2300,7 @@ async function executeQuery() {
   const startTime = performance.now();
 
   try {
-    const response = await fetch("/api/server", { // <-- FIXED PATH
+    const response = await fetch("/api/execute-query", { // <-- FIXED PATH
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query })
