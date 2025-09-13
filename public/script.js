@@ -2251,30 +2251,32 @@ function displaySelectedQuery(){
 
 // ---------- Execute Query ----------
 
-async function executeQuery() {
-  const query = document.getElementById("selectedQueryText").value;
-  document.getElementById("loader").style.display = "block";
-  document.getElementById("resultsContainer").innerHTML = "";
-  const startTime = performance.now();
 
-  try {
-    const response = await fetch("/execute-query", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query })
-    });
-    const data = await response.json();
-    document.getElementById("loader").style.display = "none";
-    const endTime = performance.now();
-    document.getElementById("executionTime").textContent = `Execution Time: ${(endTime - startTime).toFixed(2)} ms`;
 
-    renderResults(data.results.bindings);
-  } catch (err) {
-    document.getElementById("loader").style.display = "none";
-    document.getElementById("resultsContainer").textContent = "Error executing query";
-    console.error(err);
-  }
-}
+// async function executeQuery() {
+//   const query = document.getElementById("selectedQueryText").value;
+//   document.getElementById("loader").style.display = "block";
+//   document.getElementById("resultsContainer").innerHTML = "";
+//   const startTime = performance.now();
+
+//   try {
+//     const response = await fetch("/execute-query", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ query })
+//     });
+//     const data = await response.json();
+//     document.getElementById("loader").style.display = "none";
+//     const endTime = performance.now();
+//     document.getElementById("executionTime").textContent = `Execution Time: ${(endTime - startTime).toFixed(2)} ms`;
+
+//     renderResults(data.results.bindings);
+//   } catch (err) {
+//     document.getElementById("loader").style.display = "none";
+//     document.getElementById("resultsContainer").textContent = "Error executing query";
+//     console.error(err);
+//   }
+// }
 
 
 
@@ -2286,6 +2288,8 @@ let currentData = [];
 let currentPage = 1;
 const rowsPerPage = 10;
 
+
+
 async function executeQuery() {
   const query = document.getElementById("selectedQueryText").value;
   document.getElementById("loader").style.display = "block";
@@ -2296,7 +2300,7 @@ async function executeQuery() {
   const startTime = performance.now();
 
   try {
-    const response = await fetch("/execute-query", {
+    const response = await fetch("/api/execute-query", { // <-- FIXED PATH
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query })
@@ -2323,6 +2327,45 @@ async function executeQuery() {
       `<p style="color:red;">Error: ${error.message}</p>`;
   }
 }
+
+
+// async function executeQuery() {
+//   const query = document.getElementById("selectedQueryText").value;
+//   document.getElementById("loader").style.display = "block";
+//   document.getElementById("executionTime").textContent = "";
+//   document.getElementById("resultsContainer").innerHTML = "";
+//   document.getElementById("paginationControls").innerHTML = "";
+
+//   const startTime = performance.now();
+
+//   try {
+//     const response = await fetch("/execute-query", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ query })
+//     });
+
+//     const data = await response.json();
+//     document.getElementById("loader").style.display = "none";
+
+//     const endTime = performance.now();
+//     document.getElementById("executionTime").textContent =
+//       `Execution Time: ${(endTime - startTime).toFixed(2)} ms`;
+
+//     if (data.results && data.results.bindings) {
+//       currentData = data.results.bindings;
+//       currentPage = 1;
+//       renderPage(currentPage);
+//     } else {
+//       document.getElementById("resultsContainer").innerHTML =
+//         "<p>No results found</p>";
+//     }
+//   } catch (error) {
+//     document.getElementById("loader").style.display = "none";
+//     document.getElementById("resultsContainer").innerHTML =
+//       `<p style="color:red;">Error: ${error.message}</p>`;
+//   }
+// }
 
 function renderPage(page) {
   currentPage = page;
