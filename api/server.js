@@ -1,49 +1,42 @@
-// api/execute-query.js
-//import fetch from "node-fetch";   // install with npm i node-fetch
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
+// Vercel now supports native fetch — no need for node-fetch
 export default async function handler(req, res) {
-  if (req.method === "POST") {
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
+  }
+
+  try {
     const { query } = req.body;
 
-    console.log(query);
+    if (!query) {
+      return res.status(400).json({ error: "Missing query" });
+    }
 
     const virtuosoEndpoint = "http://bike-csecu.com:8890/sparql/";
 
+    const response = await fetch(virtuosoEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Accept: "application/json",
+      },
+      body: `query=${encodeURIComponent(query)}`,
+    });
+
+    const text = await response.text();
+
     try {
-      const response = await fetch(virtuosoEndpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Accept: "application/json",
-        },
-        body: `query=${encodeURIComponent(query)}`,
-      });
-
-      const text = await response.text();
-
-      try {
-        const data = JSON.parse(text);
-        res.status(200).json(data);
-      } catch (err) {
-        console.error("JSON parse error:", err);
-        res.status(500).json({ error: "Failed to parse JSON", details: text });
-      }
+      const data = JSON.parse(text);
+      return res.status(200).json(data);
     } catch (err) {
-      console.error("Query error:", err);
-      res.status(500).json({ error: "Error executing query", details: err.message });
+      console.error("JSON parse error:", err);
+      return res
+        .status(500)
+        .json({ error: "Failed to parse JSON", details: text });
     }
-  } else {
-    res.status(405).json({ message: "Method not allowed" });
+  } catch (err) {
+    console.error("Query error:", err);
+    return res
+      .status(500)
+      .json({ error: "Error executing query", details: err.message });
   }
 }
-
-// const response = await fetch("/api/execute-query", {
-//   method: "POST",
-//   headers: { "Content-Type": "application/json" },
-//   body: JSON.stringify({ query })
-// });
