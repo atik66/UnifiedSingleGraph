@@ -1,5 +1,5 @@
 // api/execute-query.js
-import fetch from "node-fetch";   // install with npm i node-fetch
+//import fetch from "node-fetch";   // install with npm i node-fetch
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -42,8 +42,8 @@ export default async function handler(req, res) {
   }
 }
 
-const response = await fetch("/api/execute-query", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ query })
-});
+// const response = await fetch("/api/execute-query", {
+//   method: "POST",
+//   headers: { "Content-Type": "application/json" },
+//   body: JSON.stringify({ query })
+// });
