@@ -2095,7 +2095,7 @@ SELECT (COUNT(*) AS ?count) ${fromClause} WHERE {
 PREFIX owl: <http://www.w3.org/2002/07/owl/>
 PREFIX bike: <http://www.bike-csecu.com/version/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-SELECT (COUNT(*) AS ?count) ${fromClause} WHERE {
+SELECT ?s ?o ${fromClause} WHERE {
   ?s ${pp} ?c1.
   ${oo ? `?c1 owl:sameAs ${oo}.` : "?c1 owl:sameAs ?o."}
   ?c1 bike:timemeta ?time.
