@@ -2050,11 +2050,11 @@ function generateBearBQuery(pp, oo=null, queryType, version1, version2=null, dat
   let fromClause = "";
   console.log(datasetType);
   if(datasetType === "hourly") {
-    fromClause = "FROM <FROM <http://bike-csecu/hourly>";
+    fromClause = "FROM <http://bike-csecu/hourly>";
   } else if(datasetType === "daily") {
     fromClause = "FROM <http://bike-csecu/daily>";
   } else if(datasetType === "instant") {
-    fromClause = "FROM <FROM <http://bike-csecu/instant>";
+    fromClause = "FROM <http://bike-csecu/instant>";
   }
 
   if(queryType === "vm") {
